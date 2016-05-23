@@ -1,6 +1,6 @@
 {
-    "name": "LiveSugar/cmf",
-    "description": "Live Sugar CMF",
+    "name": "LiveSugar/Framework",
+    "description": "Live Sugar Framework",
     "keywords": [
         "PHP",
         "humanity",
@@ -27,7 +27,7 @@
         "php": ">=5.6.0"
     },
     "autoload": {
-        "psr-4": {"livesugar\\cmf\\": ""}
+        "psr-4": {"livesugar\\framework\\": ""}
     },
     "extra": {
         "branch-alias": {
