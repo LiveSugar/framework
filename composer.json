@@ -1,0 +1,37 @@
+{
+    "name": "LiveSugar/cmf",
+    "description": "Live Sugar CMF",
+    "keywords": [
+        "PHP",
+        "humanity",
+        "framework",
+        "VA"
+    ],
+    "homepage": "https://github.com/LiveSugar/cmf",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Buturlakin Andrey",
+            "email": "xezzus@gmail.com",
+            "homepage": "https://github.com/xezzus",
+            "role": "Founder and project lead"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/LiveSugar/cmf/issues",
+        "wiki": "https://github.com/LiveSugar/cmf/wiki",
+        "source": "https://github.com/LiveSugar/cmf/humanity"
+    },
+    "require": {
+        "php": ">=5.6.0"
+    },
+    "autoload": {
+        "psr-4": {"livesugar\\cmf\\": ""}
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
