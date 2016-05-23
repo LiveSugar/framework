@@ -7,7 +7,7 @@
         "framework",
         "VA"
     ],
-    "homepage": "https://github.com/LiveSugar/cmf",
+    "homepage": "https://github.com/LiveSugar/framework",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -19,9 +19,9 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/LiveSugar/cmf/issues",
-        "wiki": "https://github.com/LiveSugar/cmf/wiki",
-        "source": "https://github.com/LiveSugar/cmf/humanity"
+        "issues": "https://github.com/LiveSugar/framework/issues",
+        "wiki": "https://github.com/LiveSugar/framework/wiki",
+        "source": "https://github.com/LiveSugar/framework/humanity"
     },
     "require": {
         "php": ">=5.6.0"
