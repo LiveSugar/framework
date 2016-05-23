@@ -120,7 +120,7 @@ class Core {
       http_response_code(404);
     } else {
       ob_start();
-      (new App($page,$libs,$view));
+      (new Page($page,$libs,$view));
       $content = ob_get_clean();
     }
     $content = '<!DOCTYPE html>'.

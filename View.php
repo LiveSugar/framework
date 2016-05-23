@@ -5,8 +5,10 @@ class View {
   
   private static $register = [];
   private static $dir;
+  private static $apps;
 
   public function __construct($dir=null){
+    self::$apps = new Apps($dirLibs);
     if(is_dir($dir)) self::$dir = $dir;
   }
 
