@@ -3,16 +3,16 @@
     "description": "Live Sugar Framework",
     "keywords": [
         "PHP",
-        "humanity",
+        "LiveSugar",
         "framework",
-        "VA"
+        "PVF"
     ],
     "homepage": "https://github.com/LiveSugar/framework",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "Buturlakin Andrey",
+            "name": "Andrey Xezzus",
             "email": "xezzus@gmail.com",
             "homepage": "https://github.com/xezzus",
             "role": "Founder and project lead"
