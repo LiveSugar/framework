@@ -3,24 +3,24 @@ namespace livesugar\framework;
 
 class Apps {
 
-    private static $application = [];
+    private static $apps = [];
     private static $conf;
-    private static $singleton = false;
     public static $register = [];
-    private static $api = false;
+    private static $http = false;
+    private static $once = false;
 
     public function __construct(){
     }
 
     public function __get($name){
-        array_push(self::$application,$name);
+        array_push(self::$apps,$name);
         return (new self);
     }
 
     public function __call($name,$value){
-        array_push(self::$application,$name);
-        $file = implode('/',self::$application);
-        self::$application = [];
+        array_push(self::$apps,$name);
+        $file = implode('/',self::$apps);
+        self::$apps = [];
         $nameApp = $file;
         $confFile = Path::$libs.'/'.$file.'.json';
         if(is_file($confFile)) {
