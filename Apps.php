@@ -34,17 +34,15 @@ class Apps {
         if(is_file($file)) {
           $func = require($file);
           if(is_callable($func)) {
-            if(!$singleton = (new Singleton)->get($nameApp)){
+            if(!isset(self::$register['once'][$nameApp])){
               $func = call_user_func_array($func,$value);
               self::$conf = [];
               if(self::$api === true) self::$register['api'][$nameApp] = true;
+              if(self::$once === true) self::$register['once'][$nameApp] = $func;
               self::$api = false;
-              if(self::$singleton === true) {
-                (new Singleton)->set($nameApp,$func);
-                self::$singleton = false;
-              }
+              self::$once = false;
             } else {
-              $func = $singleton;
+              $func = self::$register['once'][$nameApp];
             }
           }
           return $func;
