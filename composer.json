@@ -1,7 +1,7 @@
 {
     "name": "livesugar/framework",
     "description": "Live Sugar Framework",
-    "keywords": [],
+    "keywords": ["livegura"],
     "homepage": "https://github.com/LiveSugar/framework",
     "type": "library",
     "license": "MIT",
