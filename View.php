@@ -4,12 +4,10 @@ namespace livesugar\framework;
 class View {
   
   private static $register = [];
-  private static $dir;
   private static $apps;
 
-  public function __construct($dir=null,$dirApps){
-    self::$apps = new Apps($dirApps);
-    if(is_dir($dir)) self::$dir = $dir;
+  public function __construct(){
+    self::$apps = new Apps();
   }
 
   public function __get($name){
@@ -22,7 +20,7 @@ class View {
     $path[] = $name;
     self::$register['path'] = [];
     $path = implode('/',$path);
-    $file = self::$dir.'/'.$path.'/index.phtml';
+    $file = Path::$view.'/'.$path.'/index.phtml';
     if(is_file($file)) require $file;
   }
 

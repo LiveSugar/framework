@@ -8,32 +8,14 @@ use MatthiasMullie\Minify\JS;
 class Core {
 
   public function __construct($dir){
-    $this->dir = $dir;
+    (new Path($dir));
   }
 
   public function __destruct(){
-    $page = $this->dir.'/page/';
-    $libs = $this->dir.'/libs/';
-    $view = $this->dir.'/view/';
-    $js = $this->dir.'/js/';
-    $css = $this->dir.'/css/';
-    $referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '' ;
-
-    // Path
-    $path = function($path){
-      $path = parse_url($path)['path'];
-      $path = urldecode($path);
-      $path = explode('/',$path);
-      foreach($path as $key=>$value) { $value = trim($value); if(empty($value)) { unset($path[$key]); } else { $path[$key] = $value; } }
-      $path = array_values($path);
-      if(empty($path)) $path = ['index'];
-      $path = implode('/',$path);
-      return $path;
-    };
 
     // Json
-    $json = function($path) use ($page) {
-      $json = $page.'/'.$path.'/index.json';
+    $json = function($path) {
+      $json = Path::$page.'/'.$path.'/index.json';
       if(is_file($json)){
         $json = file_get_contents($json);
         $json = json_decode($json,true);
@@ -41,9 +23,14 @@ class Core {
       return $json;
     };
 
+    // API
+    if(substr($_SERVER['HTTP_ACCEPT'],0,6) == 'api://'){
+      header('Content-Type: application/json');
+      die((new Exec(substr($_SERVER['HTTP_ACCEPT'],6),file_get_contents('php://input')))->json());
+    }
 
     // Type Content
-    switch($path('//'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['REQUEST_URI'])){
+    switch(Path::$path){
       case "script.js":
         $type = 'js';
       break;
@@ -57,20 +44,19 @@ class Core {
     // Js
     if($type == 'js'){
       header("Content-Type: text/javascript");
-      $path = $path($referer);
-      $json = $json($path);
+      $json = $json(Path::$referer);
       $content = '';
       // Config
       if(isset($json['js']) && is_array($json['js'])){
         foreach($json['js'] as $value){
-          $file = $js.'/'.$value.'.js';
+          $file = Path::$js.'/'.$value.'.js';
           if(is_file($file)){
             $content .= file_get_contents($file);
           }
         }
       }
       // Slave
-      $slave = $page.'/'.$path.'/index.js';
+      $slave = Path::$page.'/'.Path::$referer.'/index.js';
       if(is_file($slave)){
         $content .= file_get_contents($slave);
       }
@@ -86,20 +72,19 @@ class Core {
     // Css
     if($type == 'css'){
       header("Content-Type: text/css");
-      $path = $path($referer);
-      $json = $json($path);
+      $json = $json(Path::$referer);
       $content = '';
       // Config
       if(isset($json['css']) && is_array($json['css'])){
         foreach($json['css'] as $value){
-          $file = $css.'/'.$value.'.css';
+          $file = Path::$css.'/'.$value.'.css';
           if(is_file($file)){
             $content .= file_get_contents($file);
           }
         }
       }
       // Slave
-      $slave = $page.'/'.$path.'/index.css';
+      $slave = Path::$page.'/'.Path::$referer.'/index.css';
       if(is_file($slave)){
         $content .= file_get_contents($slave);
       }
@@ -114,15 +99,9 @@ class Core {
 
     // Page
     $content = '';
-    $path = $path('//'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['REQUEST_URI']);
-    $page = $page.'/'.$path.'/index.phtml';
-    if(!is_file($page)) {
-      http_response_code(404);
-    } else {
-      ob_start();
-      (new Page($page,$libs,$view));
-      $content = ob_get_clean();
-    }
+    ob_start();
+    (new Page);
+    $content = ob_get_clean();
     $content = '<!DOCTYPE html>'.
       '<html lang="ru">'.
       '<head>'.

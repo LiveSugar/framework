@@ -6,12 +6,10 @@ class Apps {
     private static $application = [];
     private static $conf;
     private static $singleton = false;
-    private static $dir = null;
-    private static $register = [];
-    private static $view;
+    public static $register = [];
+    private static $api = false;
 
-    public function __construct($dir=null){
-      if(!is_null($dir) && is_dir($dir)) self::$dir = $dir;
+    public function __construct(){
     }
 
     public function __get($name){
@@ -24,14 +22,14 @@ class Apps {
         $file = implode('/',self::$application);
         self::$application = [];
         $nameApp = $file;
-        $confFile = self::$dir.'/'.$file.'.json';
+        $confFile = Path::$libs.'/'.$file.'.json';
         if(is_file($confFile)) {
           self::$conf = file_get_contents($confFile);
           self::$conf = json_decode(self::$conf,true);
         } else {
           self::$conf = [];
         }
-        $file = self::$dir.'/'.$file.'.php';
+        $file = Path::$libs.'/'.$file.'.php';
         if(!is_file($file)) return false;
         if(is_file($file)) {
           $func = require($file);
@@ -39,6 +37,8 @@ class Apps {
             if(!$singleton = (new Singleton)->get($nameApp)){
               $func = call_user_func_array($func,$value);
               self::$conf = [];
+              if(self::$api === true) self::$register['api'][$nameApp] = true;
+              self::$api = false;
               if(self::$singleton === true) {
                 (new Singleton)->set($nameApp,$func);
                 self::$singleton = false;
