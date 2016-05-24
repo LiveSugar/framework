@@ -7,8 +7,8 @@ class View {
   private static $dir;
   private static $apps;
 
-  public function __construct($dir=null){
-    self::$apps = new Apps($dirLibs);
+  public function __construct($dir=null,$dirApps){
+    self::$apps = new Apps($dirApps);
     if(is_dir($dir)) self::$dir = $dir;
   }
 
