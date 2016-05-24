@@ -1,7 +1,7 @@
 {
     "name": "livesugar/framework",
     "description": "Live Sugar Framework",
-    "keywords": ["livegura"],
+    "keywords": ["livegura","PHP","framework","PVF"],
     "homepage": "https://github.com/LiveSugar/framework",
     "type": "library",
     "license": "MIT",
