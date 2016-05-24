@@ -1,5 +1,5 @@
 <?php
-namespace humanitysoft\humanity;
+namespace livesugar\framework;
 
 use zz\Html\HTMLMinify;
 use MatthiasMullie\Minify\CSS;
