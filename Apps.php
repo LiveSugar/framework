@@ -37,9 +37,9 @@ class Apps {
             if(!isset(self::$register['once'][$nameApp])){
               $func = call_user_func_array($func,$value);
               self::$conf = [];
-              if(self::$api === true) self::$register['api'][$nameApp] = true;
+              if(self::$http === true) self::$register['http'][$nameApp] = true;
               if(self::$once === true) self::$register['once'][$nameApp] = $func;
-              self::$api = false;
+              self::$http = false;
               self::$once = false;
             } else {
               $func = self::$register['once'][$nameApp];

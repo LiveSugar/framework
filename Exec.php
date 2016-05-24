@@ -25,8 +25,8 @@ class Exec {
       if($i == 1) $apps = call_user_func_array([$apps,$name],$params);
       else $apps = $apps->{$name};
     }
-    $api = (isset(Apps::$register['api'])) ? Apps::$register['api'] : [] ;
-    if(!isset($api[$method])) $this->result = null;
+    $http = (isset(Apps::$register['http'])) ? Apps::$register['http'] : [] ;
+    if(!isset($http[$method])) $this->result = null;
     else $this->result = $apps;
   }
 
