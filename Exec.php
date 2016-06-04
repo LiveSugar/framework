@@ -31,7 +31,7 @@ class Exec {
   }
 
   public function json(){
-    return json_encode($this->result);
+    return json_encode($this->result,JSON_UNESCAPED_UNICODE);
   }
 
 }
