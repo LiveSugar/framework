@@ -6,7 +6,6 @@ class Apis {
   public function __invoke($domain,$name,$data) {
     $data = json_encode($data,JSON_UNESCAPED_UNICODE);
     $url = 'http://'.$domain;
-    var_dump($url);
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_HEADER, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
