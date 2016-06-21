@@ -5,9 +5,11 @@ class View {
   
   private static $register = [];
   private static $apps;
+  private static $info;
 
   public function __construct(){
-    self::$apps = new Apps();
+    self::$apps = new Apps;
+    self::$info = new Info;
   }
 
   public function __get($name){
