@@ -18,7 +18,8 @@ class View {
   }
 
   public function __call($name,$value){
-    $path = self::$register['path'];
+    if(isset(self::$register['path'])) $path = self::$register['path'];
+    else $path = [];
     $path[] = $name;
     self::$register['path'] = [];
     $path = implode('/',$path);
