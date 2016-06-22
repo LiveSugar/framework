@@ -3,7 +3,7 @@ namespace livesugar\framework;
 
 class View {
   
-  private static $register = [];
+  private static $register = ['path'=>[]];
   private static $apps;
   private static $info;
 
@@ -18,13 +18,12 @@ class View {
   }
 
   public function __call($name,$value){
-    if(isset(self::$register['path'])) $path = self::$register['path'];
-    else $path = [];
-    $path[] = $name;
-    self::$register['path'] = [];
-    $path = implode('/',$path);
+    array_push(self::$register['path'],$name);
+    $path = implode('/',self::$register['path']);
     $file = Path::$view.'/'.$path.'/index.phtml';
     if(is_file($file)) require $file;
+    self::$register['path'] = [];
+    self::$info->view($path);
   }
 
 }

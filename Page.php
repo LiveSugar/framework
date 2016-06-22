@@ -7,7 +7,7 @@ class Page {
   private static $view;
   private static $info;
 
-  public function __construct(){
+  public function __construct($load=true){
     self::$apps = new Apps;
     self::$view = new View;
     self::$info = new Info;

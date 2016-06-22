@@ -4,6 +4,7 @@ namespace livesugar\framework;
 class Info {
 
   public $apps;
+  public static $view = [];
 
   public function __construct(){
 
@@ -43,6 +44,10 @@ class Info {
     };
     $scandirs(Path::$libs);
 
+  }
+
+  public function view($path){
+    return array_push(self::$view,$path);
   }
 
 }

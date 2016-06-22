@@ -13,9 +13,15 @@ class Core {
 
   public function __destruct(){
 
+    // API
+    if(substr($_SERVER['HTTP_ACCEPT'],0,6) == 'api://'){
+      header('Content-Type: application/json');
+      die((new Exec(substr($_SERVER['HTTP_ACCEPT'],6),file_get_contents('php://input')))->json());
+    }
+
     // Json
     $json = function($path) {
-      $json = Path::$page.'/'.$path.'/index.json';
+      $json = $path.'/index.json';
       if(is_file($json)){
         $json = file_get_contents($json);
         $json = json_decode($json,true);
@@ -23,11 +29,9 @@ class Core {
       return $json;
     };
 
-    // API
-    if(substr($_SERVER['HTTP_ACCEPT'],0,6) == 'api://'){
-      header('Content-Type: application/json');
-      die((new Exec(substr($_SERVER['HTTP_ACCEPT'],6),file_get_contents('php://input')))->json());
-    }
+
+    // Save get
+    $save = Save::get();
 
     // Type Content
     switch(Path::$path){
@@ -44,11 +48,11 @@ class Core {
     // Js
     if($type == 'js'){
       header("Content-Type: text/javascript");
-      $json = $json(Path::$referer);
+      $config = $json(Path::$page.'/'.Path::$referer);
       $content = '';
       // Config
-      if(isset($json['js']) && is_array($json['js'])){
-        foreach($json['js'] as $value){
+      if(isset($config['js']) && is_array($config['js'])){
+        foreach($config['js'] as $value){
           $file = Path::$js.'/'.$value.'.js';
           if(is_file($file)){
             $content .= file_get_contents($file);
@@ -60,6 +64,25 @@ class Core {
       if(is_file($slave)){
         $content .= file_get_contents($slave);
       }
+
+      // Slave js
+      if(isset($save['view'])){
+        foreach($save['view'] as $path){
+          $config = $json(Path::$view.'/'.$path);
+          if(isset($config['js']) && is_array($config['js'])){
+            foreach($config['js'] as $value){
+              $file = Path::$js.'/'.$value.'.js';
+              if(is_file($file)){
+                $content .= file_get_contents($file);
+              }
+            }
+          }
+          $file = Path::$view.$path.'/index.js';
+          if(!is_file($file)) continue;
+          $content .= file_get_contents($file);
+        }
+      }
+
       // Minify
       if(!empty($content)){
         $minifier = new JS();
@@ -72,11 +95,11 @@ class Core {
     // Css
     if($type == 'css'){
       header("Content-Type: text/css");
-      $json = $json(Path::$referer);
+      $config = $json(Path::$page.'/'.Path::$referer);
       $content = '';
       // Config
-      if(isset($json['css']) && is_array($json['css'])){
-        foreach($json['css'] as $value){
+      if(isset($config['css']) && is_array($config['css'])){
+        foreach($config['css'] as $value){
           $file = Path::$css.'/'.$value.'.css';
           if(is_file($file)){
             $content .= file_get_contents($file);
@@ -88,6 +111,25 @@ class Core {
       if(is_file($slave)){
         $content .= file_get_contents($slave);
       }
+
+      // Slave view
+      if(isset($save['view'])){
+        foreach($save['view'] as $path){
+          $config = $json(Path::$view.'/'.$path);
+          if(isset($config['css']) && is_array($config['css'])){
+            foreach($config['css'] as $value){
+              $file = Path::$css.'/'.$value.'.css';
+              if(is_file($file)){
+                $content .= file_get_contents($file);
+              }
+            }
+          }
+          $file = Path::$view.$path.'/index.css';
+          if(!is_file($file)) continue;
+          $content .= file_get_contents($file);
+        }
+      }
+
       // Minify
       if(!empty($content)){
         $minifier = new CSS();
@@ -102,6 +144,11 @@ class Core {
     ob_start();
     (new Page);
     $content = ob_get_clean();
+
+    $save = Save::get();
+    $save['view'] = Info::$view;
+    Save::set($save);
+
     $content = '<!DOCTYPE html>'.
       '<html lang="ru">'.
       '<head>'.
