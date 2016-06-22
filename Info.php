@@ -22,13 +22,22 @@ class Info {
           $appName = preg_replace('/^\//Uui','',$appName);
           # Reflection
           $function = require($appFile);
+          if(is_array($function)) {
+            $opts = $function[1];
+            $opts = explode('|',$opts);
+            $opts = array_flip($opts);
+            $function = $function[0];
+          } else {
+            unset($opts);
+          }
           if(!is_callable($function)) return [];
           $reflection = new \ReflectionFunction($function);
           $params = [];
           foreach($reflection->getParameters() as $key=>$value){
             $params[] = $value->name;
           }
-          $this->apps[$appName] = $params;
+          $this->apps[$appName]['params'] = $params;
+          $this->apps[$appName]['public'] = (isset($opts['PUBLIC'])) ? true : false ;
         }
       }
     };

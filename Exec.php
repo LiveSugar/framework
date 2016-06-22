@@ -10,6 +10,12 @@ class Exec {
     $file = Path::$libs.'/'.$method.'.php';
     if(!is_file($file)) return false;
     $function = require($file);
+    if(is_array($function)) {
+      $opts = $function[1];
+      $opts = explode('|',$opts);
+      $opts = array_flip($opts);
+      $function = $function[0];
+    }
     if(!is_callable($function)) return [];
     $reflection = new \ReflectionFunction($function);
     $params = [];
@@ -25,9 +31,8 @@ class Exec {
       if($i == 1) $apps = call_user_func_array([$apps,$name],$params);
       else $apps = $apps->{$name};
     }
-    $http = (isset(Apps::$register['http'])) ? Apps::$register['http'] : [] ;
-    if(!isset($http[$method])) $this->result = null;
-    else $this->result = $apps;
+    if(isset($opts['PUBLIC'])) $this->result = $apps;
+    else $this->result = null;
   }
 
   public function json(){

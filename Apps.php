@@ -33,16 +33,21 @@ class Apps {
         if(!is_file($file)) return false;
         if(is_file($file)) {
           $func = require($file);
+          if(is_array($func)) {
+            $opts = $func[1];
+            $opts = explode('|',$opts);
+            $opts = array_flip($opts);
+            $func = $func[0];
+          }
           if(is_callable($func)) {
-            if(!isset(self::$register['once'][$nameApp])){
+            if(!isset(self::$register['single'][$nameApp])){
               $func = call_user_func_array($func,$value);
               self::$conf = [];
-              if(self::$http === true) self::$register['http'][$nameApp] = true;
-              if(self::$once === true) self::$register['once'][$nameApp] = $func;
-              self::$http = false;
-              self::$once = false;
+              if(isset($opts)){
+                if(isset($opts['SINGLE'])) self::$register['apps'][$nameApp]['single'] = $func;
+              }
             } else {
-              $func = self::$register['once'][$nameApp];
+              $func = self::$register['apps'][$nameApp]['single'];
             }
           }
           return $func;
