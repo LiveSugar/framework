@@ -6,12 +6,10 @@ class View {
   private static $register = ['path'=>[]];
   private static $apps;
   private static $info;
-  private static $path;
 
   public function __construct(){
     self::$apps = new Apps;
     self::$info = new Info;
-    self::$path = new Path;
   }
 
   public function __get($name){
