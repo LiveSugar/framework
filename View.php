@@ -20,9 +20,9 @@ class View {
   public function __call($name,$value){
     array_push(self::$register['path'],$name);
     $path = implode('/',self::$register['path']);
+    self::$register['path'] = [];
     $file = Path::$view.'/'.$path.'/index.phtml';
     if(is_file($file)) require $file;
-    self::$register['path'] = [];
     self::$info->view($path);
   }
 
