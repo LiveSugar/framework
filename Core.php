@@ -48,7 +48,7 @@ class Core {
     // Js
     if($type == 'js'){
       header("Content-Type: text/javascript");
-      $config = $json(Path::$page.'/'.Path::$referer);
+      $config = $json(Path::$page.'/'.$_GET['path']);
       $content = '';
       // Config
       if(isset($config['js']) && is_array($config['js'])){
@@ -60,7 +60,7 @@ class Core {
         }
       }
       // Slave
-      $slave = Path::$page.'/'.Path::$referer.'/index.js';
+      $slave = Path::$page.'/'.$_GET['path'].'/index.js';
       if(is_file($slave)){
         $content .= file_get_contents($slave);
       }
@@ -95,7 +95,7 @@ class Core {
     // Css
     if($type == 'css'){
       header("Content-Type: text/css");
-      $config = $json(Path::$page.'/'.Path::$referer);
+      $config = $json(Path::$page.'/'.$_GET['path']);
       $content = '';
       // Config
       if(isset($config['css']) && is_array($config['css'])){
@@ -107,7 +107,7 @@ class Core {
         }
       }
       // Slave
-      $slave = Path::$page.'/'.Path::$referer.'/index.css';
+      $slave = Path::$page.'/'.$_GET['path'].'/index.css';
       if(is_file($slave)){
         $content .= file_get_contents($slave);
       }
@@ -155,8 +155,8 @@ class Core {
       '<title></title>'.
       '<meta charset="utf-8">'.
       '<meta name="viewport" content="width=device-width, initial-scale=1">'.
-      '<link rel="stylesheet" type="text/css" href="/style.css">'.
-      '<script src="/script.js" type="text/javascript"></script>'.
+      '<link rel="stylesheet" type="text/css" href="/style.css?path='.Path::$path.'">'.
+      '<script src="/script.js?path='.Path::$path.'" type="text/javascript"></script>'.
       '</head>'.
       '<body>'.$content.'</body></html>';
 
