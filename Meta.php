@@ -5,7 +5,7 @@ class Meta {
 
   public static $title = [];
   public static $description;
-  public static $keyword = [];
+  public static $keywords = [];
 
   public function title($title){
     self::$title[] = $title;
@@ -16,7 +16,7 @@ class Meta {
   }
 
   public function keyword($keyword){
-    self::$keyword[] = $keyword;
+    self::$keywords[] = $keyword;
   }
 
 }
