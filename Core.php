@@ -149,10 +149,23 @@ class Core {
     $save['view'] = Info::$view;
     Save::set($save);
 
+    $title = Meta::$title;
+    $title = implode(' &ndash; ', $title);
+
+    $description = Meta::$description;
+
+    $keywords = Meta::$keywords;
+    $keywords = implode(', ', $keywords);
+
     $content = '<!DOCTYPE html>'.
-      '<html lang="ru">'.
+      '<html>'.
       '<head>'.
-      '<title></title>'.
+      '<title>'.$title.'</title>'.
+      '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'.
+      '<meta name ="Generator" Content="LiveSugare">'.
+      '<meta name="description" Content="'.$description.'">'.
+      '<meta name="keywords" Content="'.$keywords.'">'.
+      '<meta name="robots" content="Index,follow">'.
       '<meta charset="utf-8">'.
       '<meta name="viewport" content="width=device-width, initial-scale=1">'.
       '<link rel="stylesheet" type="text/css" href="/style.css?path='.Path::$path.'">'.
