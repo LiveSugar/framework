@@ -173,7 +173,7 @@ class Core {
       '</head>'.
       '<body>'.$content.'</body></html>';
 
-    $minify = new HTMLMinify($content,[HTMLMinify::OPTIMIZATION_ADVANCED,HTMLMinify::DOCTYPE_HTML5]);
+    $minify = new HTMLMinify($content,['optimizationLevel'=>HTMLMinify::OPTIMIZATION_ADVANCED]);
     $content = $minify->process();
     die($content);
   }
