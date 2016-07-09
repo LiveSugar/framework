@@ -1,7 +1,6 @@
 <?php
 namespace livesugar\framework;
 
-use zz\Html\HTMLMinify;
 use MatthiasMullie\Minify\CSS;
 use MatthiasMullie\Minify\JS;
 
@@ -173,8 +172,9 @@ class Core {
       '</head>'.
       '<body>'.$content.'</body></html>';
 
-    $minify = new HTMLMinify($content,['optimizationLevel'=>HTMLMinify::OPTIMIZATION_ADVANCED]);
-    $content = $minify->process();
+    $content = preg_replace('/\>\s+\</Uui','><',$content);
+    $content = preg_replace('/\s/Uui',' ',$content);
+    $content = preg_replace('/[ ]+/Uui',' ',$content);
     die($content);
   }
 
