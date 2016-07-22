@@ -5,8 +5,8 @@ class Exec {
 
   public $result;
 
-  public function __construct($method,$json){
-    $data = json_decode($json,true);
+  public function __construct($method,$json=false){
+    if($json !== false && !empty($json)) $data = json_decode($json,true);
     $file = Path::$libs.'/'.$method.'.php';
     if(!is_file($file)) return false;
     $function = require($file);

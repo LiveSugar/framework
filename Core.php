@@ -17,6 +17,14 @@ class Core {
       header('Content-Type: application/json');
       die((new Exec(substr($_SERVER['HTTP_ACCEPT'],6),file_get_contents('php://input')))->json());
     }
+    // API[FILE]
+    if(substr($_SERVER['HTTP_ACCEPT'],0,12) == 'api[file]://'){
+      $file = file_get_contents('php://input');
+      $fileTmp = tempnam(sys_get_temp_dir(), microtime(1));
+      file_put_contents($fileTmp,$file);
+      File::add($fileTmp);
+      die((new Exec(substr($_SERVER['HTTP_ACCEPT'],12)))->json());
+    }
 
     // Json
     $json = function($path) {
