@@ -8,8 +8,10 @@ class Apps {
     public static $register = [];
     private static $http = false;
     private static $once = false;
+    private static $file = false;
 
     public function __construct(){
+      self::$file = new File;
     }
 
     public function __get($name){
