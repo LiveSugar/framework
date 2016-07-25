@@ -9,9 +9,12 @@ class Apps {
     private static $http = false;
     private static $once = false;
     private static $file = false;
+    private static $apis = false;
+
 
     public function __construct(){
       self::$file = new File;
+      self::$apis = new Apis;
     }
 
     public function __get($name){
