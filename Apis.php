@@ -41,7 +41,7 @@ class Apis {
     return $this;
   }
 
-  public function exec(){
+  public function exec($function){
     if($this->file !== false){
       $url = parse_url($this->name);
       $name = preg_replace('/^\//','',$url['path']);
@@ -59,7 +59,7 @@ class Apis {
       curl_setopt($ch, CURLOPT_POSTFIELDS, $this->file);
       $result = curl_exec($ch);
       $result = json_decode($result,true);
-      var_dump($result);
+      $function($result);
     }
     return $this;
   }
