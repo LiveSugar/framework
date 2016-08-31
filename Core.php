@@ -25,6 +25,21 @@ class Core {
       File::add($fileTmp);
       die((new Exec(substr($_SERVER['HTTP_ACCEPT'],12)))->json());
     }
+    // VIEW
+    if(substr($_SERVER['HTTP_ACCEPT'],0,7) == 'view://'){
+      header('Content-Type: application/json');
+      $path = substr($_SERVER['HTTP_ACCEPT'],7);
+      $output = [];
+      $path = Path::$view.''.$path;
+      $html = $path.'/index.phtml';
+      if(!is_file($html)) exit;
+      $output['html'] = file_get_contents($html);
+      $css = $path.'/index.css';
+      if(is_file($css)) $output['css'] = file_get_contents($css);
+      $js = $path.'/index.js';
+      if(is_file($js)) $output['js'] = file_get_contents($js);
+      die(json_encode($output,JSON_UNESCAPED_UNICODE));
+    }
 
     // Json
     $json = function($path) {
