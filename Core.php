@@ -46,6 +46,7 @@ class Core {
         }
       $html = ob_get_clean();
       $output['html'] = $html;
+      $path = Path::$view.''.$path;
       $css = $path.'/index.css';
       if(is_file($css)) $output['css'] = file_get_contents($css);
       $js = $path.'/index.js';
