@@ -29,11 +29,23 @@ class Core {
     if(substr($_SERVER['HTTP_ACCEPT'],0,7) == 'view://'){
       header('Content-Type: application/json');
       $path = substr($_SERVER['HTTP_ACCEPT'],7);
+      $html = explode('/',$path);
+      foreach($html as $key=>$value){
+        $value = trim($value);
+        if(empty($value)) unset($html[$key]);
+      }
       $output = [];
-      $path = Path::$view.''.$path;
-      $html = $path.'/index.phtml';
-      if(!is_file($html)) exit;
-      $output['html'] = file_get_contents($html);
+      ob_start();
+        $view = new View;
+        while($name = array_shift($html)){
+          if(count($html) == 0){
+            $view->{$name}();
+          } else {
+            $view = $view->{$name};
+          }
+        }
+      $html = ob_get_clean();
+      $output['html'] = $html;
       $css = $path.'/index.css';
       if(is_file($css)) $output['css'] = file_get_contents($css);
       $js = $path.'/index.js';
