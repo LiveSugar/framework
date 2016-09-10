@@ -1,0 +1,34 @@
+<div class="container">
+
+<div class="row">
+  <div class="col-md-3">
+    <h2>Methods</h2>
+    <hr>
+    <select class="form-control" size="25" id="methods">
+    <?php
+    foreach(self::$info->apps as $name=>$val){
+      if($val['public'] === true) $public[$name] = $val;
+      else $private[$name] = $val;
+    }
+    echo "<option disabled style='background:#333;color:#eee;'>PUBLIC</option>";
+    foreach($public as $name=>$val){
+      echo "<option value='".json_encode(['name'=>$name,'params'=>$val['params']])."'>".$name.'</option>';
+    }
+    echo "<option disabled style='background:#333;color:#eee;'>PRIVATE</option>";
+    foreach($private as $name=>$val){
+      echo "<option value='".json_encode(['name'=>$name,'params'=>$val['params']])."'>".$name.'</option>';
+    }
+    ?>
+    </select>
+  </div>
+  <div class="col-md-9">
+    <h2>Forms</h2>
+    <hr>
+    <h3 id="method"></h3>
+    <div id="form"></div>
+    <hr>
+    <pre id="result"></pre>
+  </div>
+</div>
+
+</div>

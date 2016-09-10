@@ -8,52 +8,56 @@ window.apps = {
     this.varName = name; 
     return this;
   },
-  file: function(file){
-    this.varFile = file;
-    return this;
-  },
-  data: function(data){
-    this.varData = data;
-    return this;
-  },
-  view: function(path){
-    this.varView = path;
-    return this;
-  },
-  exec: function(callback){
-    if(this.varData !== false){
-      var blob = new Blob([JSON.stringify(this.varData)], {type : 'application/json'});
-    }
-    if(this.varFile !== false){
-      var blob = new Blob([this.varFile], {type : 'application/octet-stream'});
-    }
+  file: function(file,callback){
+    var blob = new Blob([file], {type : 'application/octet-stream'});
     var xhr = new XMLHttpRequest();
     xhr.open('POST', this.url, true);
-    if(this.varData !== false){
-      xhr.setRequestHeader('Accept', 'api://'+this.varName);
-    }
-    if(this.varFile !== false){
-      xhr.setRequestHeader('Accept', 'api[file]://'+this.varName);
-    }
-    if(this.varView !== false){
-      xhr.setRequestHeader('Accept', 'view://'+this.varView);
-    }
-    xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-    if(this.varData !== false){
-      xhr.responseType = 'json';
-    }
-    if(this.varView !== false){
-      xhr.responseType = 'json';
-    }
+    xhr.setRequestHeader('Accept', 'api[file]://'+this.varName);
+    xhr.responseType = 'json';
     xhr.onload = function(e) {
       if (this.status == 200) {
-        if(this.varView !== false){
-          callback(this.response.html);
-        } else {
-          callback(this.response);
-        }
+        var list = this.response;
+        callback(list);
       }
-    };
+    }
     xhr.send(blob);
+  },
+  data: function(data,callback){
+    var xhr = new XMLHttpRequest();
+    var blob = new Blob([JSON.stringify(data)], {type : 'application/json'});
+    xhr.open('POST', this.url, true);
+    xhr.setRequestHeader('Accept', 'api://'+this.varName);
+    xhr.responseType = 'json';
+    xhr.onload = function(e) {
+      if (this.status == 200) {
+        callback(this.response);
+      }
+    }
+    xhr.send(blob);
+    return this;
+  },
+  view: function(callback){
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', this.url, true);
+    xhr.setRequestHeader('Accept', 'view://'+this.varName);
+    xhr.responseType = 'json';
+    xhr.onload = function(e) {
+      if (this.status == 200) {
+        // Add Script
+        var jsId = 'addviewscript';
+        var check = document.getElementById(jsId);
+        if(check !== null){
+          check.parentNode.removeChild(check);
+        }
+        var script = document.createElement('script');
+        script.id = jsId;
+        script.type = "text\/javascript";
+        script.text = this.response.js;
+        document.getElementsByTagName('head')[0].appendChild(script);
+        callback(this.response.html);
+      }
+    }
+    xhr.send();
+    return this;
   }
 }
