@@ -30,8 +30,7 @@ $(function(){
         var fieldValue = $(e).val();
         data[fieldName] = fieldValue; 
       });
-      apps.name(json.name).data(data).exec(function(res){
-        console.log(res);
+      apps.name(json.name).data(data,function(res){
         $('#result').text(JSON.stringify(res," ",2));
       });
     });
