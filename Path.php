@@ -14,7 +14,7 @@ class Path {
 
   public function __construct($dir){
     self::$page = $dir.'/page/';
-    self::$libs = $dir.'/libs/';
+    self::$libs = $dir.'/lib/';
     self::$view = $dir.'/view/';
     self::$js = $dir.'/js/';
     self::$css = $dir.'/css/';
