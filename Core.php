@@ -37,6 +37,7 @@ class Core {
       $output = [];
       ob_start();
         $view = new View;
+        if(empty($view)) $view = ['index'];
         while($name = array_shift($html)){
           if(count($html) == 0){
             $view->{$name}();
