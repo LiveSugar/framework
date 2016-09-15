@@ -46,6 +46,9 @@ class Core {
           }
         }
       $html = ob_get_clean();
+      $html = preg_replace('/\>\s+\</Uui','><',$html);
+      $html = preg_replace('/\s/Uui',' ',$html);
+      $html = preg_replace('/[ ]+/Uui',' ',$html);
       $output['html'] = $html;
       $path = Path::$view.''.$path;
       $css = $path.'/index.css';
