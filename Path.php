@@ -28,7 +28,7 @@ class Path {
       $path = implode('/',$path);
       return $path;
     };
-    if(isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']) && isset($_SERVER['HTTP_REFERER'])){
+    if(isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])){
       self::$path = $path('//'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['REQUEST_URI']);
       $referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '' ;
       self::$referer = $path($referer);
