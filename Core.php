@@ -74,10 +74,10 @@ class Core {
 
     // Type Content
     switch(Path::$path){
-      case "script.js":
+      case "js":
         $type = 'js';
       break;
-      case "style.css":
+      case "css":
         $type = 'css';
       break;
       default:
@@ -208,8 +208,8 @@ class Core {
       '<meta name="robots" content="Index,follow">'.
       '<meta charset="utf-8">'.
       '<meta name="viewport" content="width=device-width, initial-scale=1">'.
-      '<link rel="stylesheet" type="text/css" href="/style.css?path='.Path::$path.'">'.
-      '<script src="/script.js?path='.Path::$path.'" type="text/javascript"></script>'.
+      '<link rel="stylesheet" type="text/css" href="/css?path='.Path::$path.'">'.
+      '<script src="/js?path='.Path::$path.'" type="text/javascript"></script>'.
       '</head>'.
       '<body>'.$content.'</body></html>';
 
