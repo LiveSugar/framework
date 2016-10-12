@@ -201,7 +201,7 @@ class Core {
       '<head>'.
       '<title>'.$title.'</title>'.
       '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'.
-      '<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">'.
+      '<link rel="icon" type="image/x-icon" sizes="16x16" href="/favicon.ico">'.
       '<meta name ="Generator" Content="LiveSugare">'.
       '<meta name="description" Content="'.$description.'">'.
       '<meta name="keywords" Content="'.$keywords.'">'.
