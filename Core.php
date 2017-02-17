@@ -68,26 +68,11 @@ class Core {
       return $json;
     };
 
-
     // Save get
     $save = Save::get();
 
-    // Type Content
-    switch(Path::$path){
-      case "js":
-        $type = 'js';
-      break;
-      case "css":
-        $type = 'css';
-      break;
-      default:
-        $type = 'page';
-    }
-
     // Js
-    if($type == 'js'){
-      header("Content-Type: text/javascript");
-      $config = $json(Path::$page.'/'.$_GET['path']);
+      $config = $json(Path::$page.'/'.Path::$path);
       $content = '';
       // Config
       if(isset($config['js']) && is_array($config['js'])){
@@ -95,13 +80,15 @@ class Core {
           $file = Path::$js.'/'.$value.'.js';
           if(is_file($file)){
             $content .= file_get_contents($file);
+            $content .= ';';
           }
         }
       }
       // Slave
-      $slave = Path::$page.'/'.$_GET['path'].'/index.js';
+      $slave = Path::$page.'/'.Path::$path.'/index.js';
       if(is_file($slave)){
         $content .= file_get_contents($slave);
+        $content .= ';';
       }
 
       // Slave js
@@ -113,12 +100,14 @@ class Core {
               $file = Path::$js.'/'.$value.'.js';
               if(is_file($file)){
                 $content .= file_get_contents($file);
+                $content .= ';';
               }
             }
           }
           $file = Path::$view.$path.'/index.js';
           if(!is_file($file)) continue;
           $content .= file_get_contents($file);
+          $content .= ';';
         }
       }
 
@@ -126,59 +115,59 @@ class Core {
       if(!empty($content)){
         $minifier = new JS();
         $minifier->add($content);
-        $content = $minifier->minify();
+        $contentJs = $minifier->minify();
+      } else {
+        $contentJs = '';
       }
-      die($content);
-    }
 
     // Css
-    if($type == 'css'){
-      header("Content-Type: text/css");
-      $config = $json(Path::$page.'/'.$_GET['path']);
-      $content = '';
-      // Config
-      if(isset($config['css']) && is_array($config['css'])){
-        foreach($config['css'] as $value){
-          $file = Path::$css.'/'.$value.'.css';
-          if(is_file($file)){
-            $content .= file_get_contents($file);
-          }
-        }
-      }
-      // Slave
-      $slave = Path::$page.'/'.$_GET['path'].'/index.css';
-      if(is_file($slave)){
-        $content .= file_get_contents($slave);
-      }
-
-      // Slave view
-      if(isset($save['view'])){
-        foreach($save['view'] as $path){
-          $config = $json(Path::$view.'/'.$path);
-          if(isset($config['css']) && is_array($config['css'])){
-            foreach($config['css'] as $value){
-              $file = Path::$css.'/'.$value.'.css';
-              if(is_file($file)){
-                $content .= file_get_contents($file);
-              }
-            }
-          }
-          $file = Path::$view.$path.'/index.css';
-          if(!is_file($file)) continue;
+    $config = $json(Path::$page.'/'.Path::$path);
+    $content = '';
+    // Config
+    if(isset($config['css']) && is_array($config['css'])){
+      foreach($config['css'] as $value){
+        $file = Path::$css.'/'.$value.'.css';
+        if(is_file($file)){
           $content .= file_get_contents($file);
         }
       }
-
-      // Minify
-      if(!empty($content)){
-        $minifier = new CSS();
-        $minifier->add($content);
-        $content = $minifier->minify();
-      }
-      die($content);
+    }
+    // Slave
+    $slave = Path::$page.'/'.Path::$path.'/index.css';
+    if(is_file($slave)){
+      $content .= file_get_contents($slave);
     }
 
+    // Slave view
+    if(isset($save['view'])){
+      foreach($save['view'] as $path){
+        $config = $json(Path::$view.'/'.$path);
+        if(isset($config['css']) && is_array($config['css'])){
+          foreach($config['css'] as $value){
+            $file = Path::$css.'/'.$value.'.css';
+            if(is_file($file)){
+              $content .= file_get_contents($file);
+            }
+          }
+        }
+        $file = Path::$view.$path.'/index.css';
+        if(!is_file($file)) continue;
+        $content .= file_get_contents($file);
+      }
+    }
+
+    // Minify
+    if(!empty($content)){
+      $minifier = new CSS();
+      $minifier->add($content);
+      $contentCss = $minifier->minify();
+    } else {
+      $contentCss = '';
+    }
+
+    //
     // Page
+    //
     $content = '';
     ob_start();
     (new Page);
@@ -196,6 +185,9 @@ class Core {
     $keywords = Meta::$keywords;
     $keywords = implode(', ', $keywords);
 
+    //
+    // Cotent
+    //
     $content = '<!DOCTYPE html>'.
       '<html>'.
       '<head>'.
@@ -208,10 +200,11 @@ class Core {
       '<meta name="robots" content="Index,follow">'.
       '<meta charset="utf-8">'.
       '<meta name="viewport" content="width=device-width, initial-scale=1">'.
-      '<link rel="stylesheet" type="text/css" href="/css?path='.Path::$path.'">'.
-      '<script src="/js?path='.Path::$path.'" type="text/javascript"></script>'.
+      '<style type="text/css">'.$contentCss.'</style>'.
+      //'<link rel="stylesheet" type="text/css" href="/css?path='.Path::$path.'">'.
+      //'<script src="/js?path='.Path::$path.'" type="text/javascript"></script>'.
       '</head>'.
-      '<body>'.$content.'</body></html>';
+      '<body><script type="text/javascript">'.$contentJs.'</script>'.$content.'</body></html>';
 
     $content = preg_replace('/\>\s+\</Uui','><',$content);
     $content = preg_replace('/\s/Uui',' ',$content);
