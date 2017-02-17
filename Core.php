@@ -204,7 +204,7 @@ class Core {
       //'<link rel="stylesheet" type="text/css" href="/css?path='.Path::$path.'">'.
       //'<script src="/js?path='.Path::$path.'" type="text/javascript"></script>'.
       '</head>'.
-      '<body><script type="text/javascript">'.$contentJs.'</script>'.$content.'</body></html>';
+      '<body>'.$content.'<script type="text/javascript">'.$contentJs.'</script></body></html>';
 
     $content = preg_replace('/\>\s+\</Uui','><',$content);
     $content = preg_replace('/\s/Uui',' ',$content);
