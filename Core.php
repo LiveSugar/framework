@@ -201,8 +201,6 @@ class Core {
       '<meta charset="utf-8">'.
       '<meta name="viewport" content="width=device-width, initial-scale=1">'.
       '<style type="text/css">'.$contentCss.'</style>'.
-      //'<link rel="stylesheet" type="text/css" href="/css?path='.Path::$path.'">'.
-      //'<script src="/js?path='.Path::$path.'" type="text/javascript"></script>'.
       '</head>'.
       '<body>'.$content.'<script type="text/javascript">'.$contentJs.'</script></body></html>';
 
