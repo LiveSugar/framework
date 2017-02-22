@@ -19,7 +19,7 @@ window.apps = {
         var list = this.response;
         callback(list);
       }
-    }
+    };
     xhr.send(blob);
   },
   data: function(data,callback){
@@ -32,7 +32,7 @@ window.apps = {
       if (this.status == 200) {
         callback(this.response);
       }
-    }
+    };
     xhr.send(blob);
     return this;
   },
@@ -56,8 +56,8 @@ window.apps = {
         document.getElementsByTagName('head')[0].appendChild(script);
         callback(this.response.html);
       }
-    }
+    };
     xhr.send();
     return this;
   }
-}
+};

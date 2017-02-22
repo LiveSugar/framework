@@ -12,50 +12,52 @@ class Core {
 
   public function __destruct(){
 
-    // API
-    if(substr($_SERVER['HTTP_ACCEPT'],0,6) == 'api://'){
-      header('Content-Type: application/json');
-      die((new Exec(substr($_SERVER['HTTP_ACCEPT'],6),file_get_contents('php://input')))->json());
-    }
-    // API[FILE]
-    if(substr($_SERVER['HTTP_ACCEPT'],0,12) == 'api[file]://'){
-      $file = file_get_contents('php://input');
-      $fileTmp = tempnam(sys_get_temp_dir(), microtime(1));
-      file_put_contents($fileTmp,$file);
-      File::add($fileTmp);
-      die((new Exec(substr($_SERVER['HTTP_ACCEPT'],12)))->json());
-    }
-    // VIEW
-    if(substr($_SERVER['HTTP_ACCEPT'],0,7) == 'view://'){
-      header('Content-Type: application/json');
-      $path = substr($_SERVER['HTTP_ACCEPT'],7);
-      $html = explode('/',$path);
-      foreach($html as $key=>$value){
-        $value = trim($value);
-        if(empty($value)) unset($html[$key]);
+    if(isset($_SERVER['HTTP_ACCEPT'])){
+      // API
+      if(substr($_SERVER['HTTP_ACCEPT'],0,6) == 'api://'){
+        header('Content-Type: application/json');
+        die((new Exec(substr($_SERVER['HTTP_ACCEPT'],6),file_get_contents('php://input')))->json());
       }
-      $output = [];
-      ob_start();
-        $view = new View;
-        if(empty($html)) $html = ['index'];
-        while($name = array_shift($html)){
-          if(count($html) == 0){
-            $view->{$name}();
-          } else {
-            $view = $view->{$name};
-          }
+      // API[FILE]
+      if(substr($_SERVER['HTTP_ACCEPT'],0,12) == 'api[file]://'){
+        $file = file_get_contents('php://input');
+        $fileTmp = tempnam(sys_get_temp_dir(), microtime(1));
+        file_put_contents($fileTmp,$file);
+        File::add($fileTmp);
+        die((new Exec(substr($_SERVER['HTTP_ACCEPT'],12)))->json());
+      }
+      // VIEW
+      if(substr($_SERVER['HTTP_ACCEPT'],0,7) == 'view://'){
+        header('Content-Type: application/json');
+        $path = substr($_SERVER['HTTP_ACCEPT'],7);
+        $html = explode('/',$path);
+        foreach($html as $key=>$value){
+          $value = trim($value);
+          if(empty($value)) unset($html[$key]);
         }
-      $html = ob_get_clean();
-      $html = preg_replace('/\>\s+\</Uui','><',$html);
-      $html = preg_replace('/\s/Uui',' ',$html);
-      $html = preg_replace('/[ ]+/Uui',' ',$html);
-      $output['html'] = $html;
-      $path = Path::$view.''.$path;
-      $css = $path.'/index.css';
-      if(is_file($css)) $output['css'] = file_get_contents($css);
-      $js = $path.'/index.js';
-      if(is_file($js)) $output['js'] = file_get_contents($js);
-      die(json_encode($output,JSON_UNESCAPED_UNICODE));
+        $output = [];
+        ob_start();
+          $view = new View;
+          if(empty($html)) $html = ['index'];
+          while($name = array_shift($html)){
+            if(count($html) == 0){
+              $view->{$name}();
+            } else {
+              $view = $view->{$name};
+            }
+          }
+        $html = ob_get_clean();
+        $html = preg_replace('/\>\s+\</Uui','><',$html);
+        $html = preg_replace('/\s/Uui',' ',$html);
+        $html = preg_replace('/[ ]+/Uui',' ',$html);
+        $output['html'] = $html;
+        $path = Path::$view.''.$path;
+        $css = $path.'/index.css';
+        if(is_file($css)) $output['css'] = file_get_contents($css);
+        $js = $path.'/index.js';
+        if(is_file($js)) $output['js'] = file_get_contents($js);
+        die(json_encode($output,JSON_UNESCAPED_UNICODE));
+      }
     }
 
     // Json
@@ -199,13 +201,12 @@ class Core {
       '<html>'.
       '<head>'.
       '<title>'.$title.'</title>'.
-      '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'.
+      '<meta charset="utf-8">'.
       '<link rel="icon" type="image/x-icon" sizes="16x16" href="/favicon.ico">'.
       '<meta name ="Generator" Content="LiveSugare">'.
       '<meta name="description" Content="'.$description.'">'.
       '<meta name="keywords" Content="'.$keywords.'">'.
       '<meta name="robots" content="Index,follow">'.
-      '<meta charset="utf-8">'.
       '<meta name="viewport" content="width=device-width, initial-scale=1">'.
       '<style type="text/css">'.$contentCss.'</style>'.
       '</head>'.
