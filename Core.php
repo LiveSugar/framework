@@ -215,12 +215,15 @@ class Core {
       '<meta charset="utf-8">'.
       '<link rel="icon" type="image/x-icon" sizes="16x16" href="/favicon.ico">'.
       '<meta name ="Generator" Content="LiveSugare">'.
+      '<link href="">'.
       '<meta name="description" Content="'.$description.'">'.
       '<meta name="keywords" Content="'.$keywords.'">'.
       '<meta name="robots" content="Index,follow">'.
       '<meta name="viewport" content="width=device-width, initial-scale=1">'.
+      '<link rel="stylesheet" type="text/css" href="/c7a628cba22e28eb17b5f5c6ae2a266a/'.Path::$path.'">'.
+      '<script src="/de9b9ed78d7e2e1dceeffee780e2f919/'.Path::$path.'" type="text/javascript"></script>'.
       '</head>'.
-      '<body>'.$content.'</body><script type="text/javascript">var script = document.createElement("script"); script.src = "/de9b9ed78d7e2e1dceeffee780e2f919/'.Path::$path.'"; script.type = "text/javascript"; document.head.appendChild(script); var link = document.createElement("link"); link.href = "/c7a628cba22e28eb17b5f5c6ae2a266a/'.Path::$path.'"; link.rel = "stylesheet"; link.type = "text/css"; document.head.appendChild(link);</script></html>';
+      '<body>'.$content.'</body></html>';
 
     $content = preg_replace('/\>\s+\</Uui','><',$content);
     $content = preg_replace('/\s/Uui',' ',$content);
