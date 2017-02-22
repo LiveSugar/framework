@@ -130,14 +130,6 @@ class Core {
         $contentJs = '';
       }
       header('Content-Type: application/javascript');
-
-      $etag = md5($contentJs); 
-      header("Etag: $etag"); 
-
-      if (@strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $last_modified_time || trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag) { 
-        header("HTTP/1.1 304 Not Modified"); 
-        exit; 
-      }
       die($contentJs);
     }
 
