@@ -18,6 +18,7 @@ class Core {
         header('Content-Type: application/json');
         die((new Exec(substr($_SERVER['HTTP_ACCEPT'],6),file_get_contents('php://input')))->json());
       }
+
       // API[FILE]
       if(substr($_SERVER['HTTP_ACCEPT'],0,12) == 'api[file]://'){
         $file = file_get_contents('php://input');
@@ -26,6 +27,7 @@ class Core {
         File::add($fileTmp);
         die((new Exec(substr($_SERVER['HTTP_ACCEPT'],12)))->json());
       }
+
       // VIEW
       if(substr($_SERVER['HTTP_ACCEPT'],0,7) == 'view://'){
         header('Content-Type: application/json');
@@ -70,10 +72,126 @@ class Core {
       return $json;
     };
 
+    //
     // Save get
+    //
     $save = Save::get();
 
+    //
+    // JavaScript
+    //
+    if(substr(Path::$path,0,32) == 'de9b9ed78d7e2e1dceeffee780e2f919'){
+      $path = substr(Path::$path,33);
+      $config = $json(Path::$page.'/'.$path);
+      $contentJs = '';
+      // Config
+      if(isset($config['js']) && is_array($config['js'])){
+        foreach($config['js'] as $value){
+          $file = Path::$js.'/'.$value.'.js';
+          if(is_file($file)){
+            $contentJs .= file_get_contents($file);
+            $contentJs .= ';';
+          }
+        }
+      }
+      // Slave
+      $slave = Path::$page.'/'.$path.'/index.js';
+      if(is_file($slave)){
+        $contentJs .= file_get_contents($slave);
+        $contentJs .= ';';
+      }
 
+      // Slave js
+      if(isset($save['view'])){
+        foreach($save['view'] as $path){
+          $config = $json(Path::$view.'/'.$path);
+          if(isset($config['js']) && is_array($config['js'])){
+            foreach($config['js'] as $value){
+              $file = Path::$js.'/'.$value.'.js';
+              if(is_file($file)){
+                $contentJs .= file_get_contents($file);
+                $contentJs .= ';';
+              }
+            }
+          }
+          $file = Path::$view.$path.'/index.js';
+          if(!is_file($file)) continue;
+          $contentJs .= file_get_contents($file);
+          $contentJs .= ';';
+        }
+      }
+
+      // Minify
+      if(!empty($contentJs)){
+        $minifier = new JS();
+        $minifier->add($contentJs);
+        $contentJs = $minifier->minify();
+      } else {
+        $contentJs = '';
+      }
+      header('Content-Type: application/javascript');
+
+      $etag = md5($contentJs); 
+      header("Etag: $etag"); 
+
+      if (@strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $last_modified_time || trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag) { 
+        header("HTTP/1.1 304 Not Modified"); 
+        exit; 
+      }
+      die($contentJs);
+    }
+
+    //
+    // CSS
+    //
+    if(substr(Path::$path,0,32) == 'c7a628cba22e28eb17b5f5c6ae2a266a'){
+      $path = substr(Path::$path,33);
+      $config = $json(Path::$page.'/'.$path);
+      $contentCss = '';
+      // Config
+      if(isset($config['css']) && is_array($config['css'])){
+        foreach($config['css'] as $value){
+          $file = Path::$css.'/'.$value.'.css';
+          if(is_file($file)){
+            $contentCss .= file_get_contents($file);
+          }
+        }
+      }
+      // Slave
+      $slave = Path::$page.'/'.$path.'/index.css';
+      if(is_file($slave)){
+        $contentCss .= file_get_contents($slave);
+      }
+
+      // Slave view
+      if(isset($save['view'])){
+        foreach($save['view'] as $path){
+          $config = $json(Path::$view.'/'.$path);
+          if(isset($config['css']) && is_array($config['css'])){
+            foreach($config['css'] as $value){
+              $file = Path::$css.'/'.$value.'.css';
+              if(is_file($file)){
+                $contentCss .= file_get_contents($file);
+              }
+            }
+          }
+          $file = Path::$view.$path.'/index.css';
+          if(!is_file($file)) continue;
+          $contentCss .= file_get_contents($file);
+        }
+      }
+
+      // Minify
+      if(!empty($contentCss)){
+        $minifier = new CSS();
+        $minifier->add($contentCss);
+        $contentCss = $minifier->minify();
+      } else {
+        $contentCss = '';
+      }
+      header("Content-type: text/css");
+      die($contentCss);
+    }
 
     //
     // Page
@@ -86,105 +204,6 @@ class Core {
     $save = Save::get();
     $save['view'] = Info::$view;
     Save::set($save);
-
-    //
-    // CSS
-    //
-    $config = $json(Path::$page.'/'.Path::$path);
-    $contentCss = '';
-    // Config
-    if(isset($config['css']) && is_array($config['css'])){
-      foreach($config['css'] as $value){
-        $file = Path::$css.'/'.$value.'.css';
-        if(is_file($file)){
-          $contentCss .= file_get_contents($file);
-        }
-      }
-    }
-    // Slave
-    $slave = Path::$page.'/'.Path::$path.'/index.css';
-    if(is_file($slave)){
-      $contentCss .= file_get_contents($slave);
-    }
-
-    // Slave view
-    if(isset($save['view'])){
-      foreach($save['view'] as $path){
-        $config = $json(Path::$view.'/'.$path);
-        if(isset($config['css']) && is_array($config['css'])){
-          foreach($config['css'] as $value){
-            $file = Path::$css.'/'.$value.'.css';
-            if(is_file($file)){
-              $contentCss .= file_get_contents($file);
-            }
-          }
-        }
-        $file = Path::$view.$path.'/index.css';
-        if(!is_file($file)) continue;
-        $contentCss .= file_get_contents($file);
-      }
-    }
-
-    // Minify
-    if(!empty($contentCss)){
-      $minifier = new CSS();
-      $minifier->add($contentCss);
-      $contentCss = $minifier->minify();
-    } else {
-      $contentCss = '';
-    }
-
-    //
-    // JavaScript
-    //
-    $config = $json(Path::$page.'/'.Path::$path);
-    $contentJs = '';
-    // Config
-    if(isset($config['js']) && is_array($config['js'])){
-      foreach($config['js'] as $value){
-        $file = Path::$js.'/'.$value.'.js';
-        if(is_file($file)){
-          $contentJs .= file_get_contents($file);
-          $contentJs .= ';';
-        }
-      }
-    }
-    // Slave
-    $slave = Path::$page.'/'.Path::$path.'/index.js';
-    if(is_file($slave)){
-      $contentJs .= file_get_contents($slave);
-      $contentJs .= ';';
-    }
-
-    // Slave js
-    if(isset($save['view'])){
-      foreach($save['view'] as $path){
-        $config = $json(Path::$view.'/'.$path);
-        if(isset($config['js']) && is_array($config['js'])){
-          foreach($config['js'] as $value){
-            $file = Path::$js.'/'.$value.'.js';
-            if(is_file($file)){
-              $contentJs .= file_get_contents($file);
-              $contentJs .= ';';
-            }
-          }
-        }
-        $file = Path::$view.$path.'/index.js';
-        if(!is_file($file)) continue;
-        $contentJs .= file_get_contents($file);
-        $contentJs .= ';';
-      }
-    }
-
-    // Minify
-    if(!empty($contentJs)){
-      $minifier = new JS();
-      $minifier->add($contentJs);
-      $contentJs = $minifier->minify();
-    } else {
-      $contentJs = '';
-    }
-
 
     $title = Meta::$title;
     $title = implode(' &ndash; ', $title);
@@ -208,9 +227,8 @@ class Core {
       '<meta name="keywords" Content="'.$keywords.'">'.
       '<meta name="robots" content="Index,follow">'.
       '<meta name="viewport" content="width=device-width, initial-scale=1">'.
-      '<style type="text/css">'.$contentCss.'</style>'.
       '</head>'.
-      '<body>'.$content.'<script type="text/javascript">'.$contentJs.'</script></body></html>';
+      '<body>'.$content.'</body><script type="text/javascript">document.body.onload = function(){var script = document.createElement("script"); script.src = "/de9b9ed78d7e2e1dceeffee780e2f919/'.Path::$path.'"; script.type = "text/javascript"; document.head.appendChild(script); var link = document.createElement("link"); link.href = "/c7a628cba22e28eb17b5f5c6ae2a266a/'.Path::$path.'"; link.rel = "stylesheet"; link.type = "text/css"; document.head.appendChild(link); };</script></html>';
 
     $content = preg_replace('/\>\s+\</Uui','><',$content);
     $content = preg_replace('/\s/Uui',' ',$content);
