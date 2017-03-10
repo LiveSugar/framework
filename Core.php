@@ -219,7 +219,6 @@ class Core {
       '<meta name="description" Content="'.$description.'">'.
       '<meta name="keywords" Content="'.$keywords.'">'.
       '<meta name="robots" content="Index,follow">'.
-      '<meta name="viewport" content="width=device-width, initial-scale=1">'.
       '<link rel="stylesheet" type="text/css" href="/c7a628cba22e28eb17b5f5c6ae2a266a/'.Path::$path.'">'.
       '<script src="/de9b9ed78d7e2e1dceeffee780e2f919/'.Path::$path.'" type="text/javascript"></script>'.
       '</head>'.
