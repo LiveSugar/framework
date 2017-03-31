@@ -1,0 +1,14 @@
+{
+    "name": "livesugar/composer",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {"livesugar\\composer\\": ""}
+    },
+    "extra": {
+        "class": "livesugar\\composer\\Plugin"
+    },
+    "require": {
+        "composer-plugin-api": "^1.0"
+    }
+}

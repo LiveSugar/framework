@@ -6,6 +6,7 @@ class Meta {
   public static $title = [];
   public static $description;
   public static $keywords = [];
+  public static $viewport;
 
   public function title($title){
     self::$title[] = $title;
@@ -17,6 +18,10 @@ class Meta {
 
   public function keyword($keyword){
     self::$keywords[] = $keyword;
+  }
+
+  public function viewport($on=false){
+    self::$viewport = $on;
   }
 
 }
