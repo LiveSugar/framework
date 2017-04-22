@@ -7,11 +7,13 @@ class View {
   private static $apps;
   private static $info;
   private static $meta;
+  private static $join;
 
   public function __construct(){
     self::$apps = new Apps;
     self::$info = new Info;
     self::$meta = new Meta;
+    self::$join = new Join;
   }
 
   public function __get($name){
