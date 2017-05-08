@@ -14,6 +14,7 @@ class Path {
   public Static $referer;
 
   public function __construct($dir){
+    self::$dir = $dir;
     self::$page = $dir.'/page/';
     self::$libs = $dir.'/lib/';
     self::$view = $dir.'/view/';
