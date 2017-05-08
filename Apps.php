@@ -11,14 +11,12 @@ class Apps {
     private static $file = false;
     private static $apis = false;
     private static $join = false;
-    private static $path = false;
 
 
     public function __construct(){
       self::$file = new File;
       self::$apis = new Apis;
       self::$join = new Join;
-      self::$path = new Path;
     }
 
     public function __get($name){
