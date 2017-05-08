@@ -17,6 +17,7 @@ class Apps {
       self::$file = new File;
       self::$apis = new Apis;
       self::$join = new Join;
+      self::$join = new Path;
     }
 
     public function __get($name){

@@ -4,6 +4,7 @@ namespace livesugar\framework;
 class Path {
 
   public static $dir;
+  public static $http;
   public Static $page;
   public Static $libs;
   public Static $view;
@@ -18,6 +19,7 @@ class Path {
     self::$view = $dir.'/view/';
     self::$js = $dir.'/js/';
     self::$css = $dir.'/css/';
+    self::$http = $dir.'/../http/';
     $path = function($path){
       $path = parse_url($path)['path'];
       $path = urldecode($path);
