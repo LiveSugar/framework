@@ -11,6 +11,7 @@ class Apps {
     private static $file = false;
     private static $apis = false;
     private static $join = false;
+    private static $path = false;
 
 
     public function __construct(){
