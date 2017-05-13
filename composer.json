@@ -16,7 +16,7 @@
     "support": {
         "issues": "https://github.com/LiveSugar/framework/issues",
         "wiki": "https://github.com/LiveSugar/framework/wiki",
-        "source": "https://github.com/LiveSugar/framework/humanity"
+        "source": "https://github.com/LiveSugar/framework"
     },
     "require": {
         "php": ">=5.6.0",
