@@ -13,6 +13,8 @@ class Core {
   public function __destruct(){
 
     if(isset($_SERVER['HTTP_ACCEPT'])){
+      
+
       // API
       if(substr($_SERVER['HTTP_ACCEPT'],0,6) == 'api://'){
         header('Content-Type: application/json');
@@ -192,6 +194,14 @@ class Core {
     ob_start();
     (new Page);
     $content = ob_get_clean();
+
+    // EXEC
+    $exec = $_SERVER['REQUEST_URI'];
+    $exec = parse_url($exec);
+    $exec = $exec['path'];
+    if($exec == '/exec'){
+      die($content);
+    }
 
     $save = Save::get();
     $save['view'] = Info::$view;
