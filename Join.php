@@ -26,7 +26,7 @@ class Join {
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
     curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1); 
-    curl_setopt ($ch, CURLOPT_HTTPHEADER, ["Accept: api[file]://".$api,"Content-Type: plain/text"]); 
+    curl_setopt ($ch, CURLOPT_HTTPHEADER, ["Accept: api[file]://".$api,"Content-Type: text/plain"]); 
     $result = curl_exec($ch); 
     return $result;
   }
