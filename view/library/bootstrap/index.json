@@ -1,0 +1,4 @@
+{
+  "js":["rest","cookie","jquery.slim.min"],
+  "css":["normalize"]
+}
