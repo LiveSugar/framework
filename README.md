@@ -1,7 +1,6 @@
-# core
-LiveSugar Frameform
+# Documentation
 
-# install
+## install
 
 ```shell
 composer create-project livesugar/framework
