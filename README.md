@@ -1,6 +1,6 @@
 # Documentation
 
-## install
+## Install
 
 With create directory to latest stability version 
 ```
