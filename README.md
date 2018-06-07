@@ -2,7 +2,7 @@
 
 ## install
 
-Create directory 
+With create directory 
 ```
 composer create-project livesugar/framework .
 ```
