@@ -25,7 +25,7 @@ Call apps to HTTP GET query
 http://example.com?apps=uuid
 ```
 
-Call apps to HTTP GET query
+Call view to HTTP GET query
 ```
 http://example.com?view=page/index
 ```
