@@ -16,3 +16,11 @@ Version of develop to current directory
 ```
 composer create-project --prefer-dist  livesugar/framework . dev-master@dev
 ```
+
+## Examples
+
+Call apps to HTTP GET query
+
+```
+http://example.com/?apps=uuid
+```
