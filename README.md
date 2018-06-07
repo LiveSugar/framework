@@ -2,7 +2,7 @@
 
 ## install
 
-With create directory 
+With create directory to latest stability version 
 ```
 composer create-project livesugar/framework .
 ```
