@@ -201,6 +201,7 @@ Class view {
       protected static $apps = null;
       protected static $view = null;
       protected static $uri = [];
+      public static $content = '';
 
       public function __construct(){
 
@@ -302,9 +303,9 @@ Class view {
           ob_end_clean();
         } 
 
+
         # return content
-        $content = $minify($content);
-        return $content;
+        self::$content .= $minify($content);
 
       }
 
@@ -498,7 +499,7 @@ class file {
     //
     if(isset($_GET['view'])){
       $html = call_user_func_array([new view,$_GET['view']],[]);
-      (new page($html));
+      die($html);
     }
 
     //
@@ -570,16 +571,16 @@ class file {
     $page = '';
     while($spot = array_pop($split)){
       foreach($spot as $key=>$val){
-        $page .= call_user_func_array([new view,$val],[]);
+        call_user_func_array([new view,$val],[]);
       }
     }
+    $page = view::$content;
 
     switch($type){
       case "view":
         die($page);
       break;
       case "page":
-        # execute page
         (new page($page));
       break;
     };
