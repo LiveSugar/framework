@@ -5,6 +5,7 @@
 Create directory 
 ```
 composer create-project livesugar/framework .
+```
 
 Current directory
 ```
