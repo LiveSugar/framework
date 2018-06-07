@@ -4,7 +4,7 @@
 
 With create directory to latest stability version 
 ```
-composer create-project livesugar/framework .
+composer create-project livesugar/framework
 ```
 
 Current directory
