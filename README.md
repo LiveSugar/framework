@@ -22,5 +22,10 @@ composer create-project --prefer-dist  livesugar/framework . dev-master@dev
 Call apps to HTTP GET query
 
 ```
-http://example.com/?apps=uuid
+http://example.com?apps=uuid
+```
+
+Call apps to HTTP GET query
+```
+http://example.com?view=page/index
 ```

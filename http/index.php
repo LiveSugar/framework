@@ -498,8 +498,8 @@ class file {
     // VIEW EXEC FROM GET URL
     //
     if(isset($_GET['view'])){
-      $html = call_user_func_array([new view,$_GET['view']],[]);
-      die($html);
+      call_user_func_array([new view,$_GET['view']],[]);
+      die(view::$content);
     }
 
     //
@@ -568,20 +568,18 @@ class file {
 
 
     # create page
-    $page = '';
     while($spot = array_pop($split)){
       foreach($spot as $key=>$val){
         call_user_func_array([new view,$val],[]);
       }
     }
-    $page = view::$content;
 
     switch($type){
       case "view":
-        die($page);
+        die(view::$content);
       break;
       case "page":
-        (new page($page));
+        (new page(view::$content));
       break;
     };
 
