@@ -35,4 +35,4 @@ http://example.com?view=page/index
 2. [WebCMF2](https://github.com/xezzus/webcmf2)
 3. [WebCMF3](https://github.com/xezzus/webcmf3)
 4. [Humanity](https://github.com/xezzus/humanity)
-5. [LiveSugar (victory)](https://github.com/LiveSugar/framework)
+5. [LiveSugar (current)](https://github.com/LiveSugar/framework)
