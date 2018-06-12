@@ -1,11 +1,9 @@
 <?php
-return function($execute,$sql){
-  $db = $this->db->pg();
+return function($db,$execute,$sql){
   $sql = $db->prepare($sql);
   $sql->execute($execute);
   $res = $sql->fetchAll();
-  $err = $db->errorInfo();
-  if(is_null($err[2])) return $res;
-  else return $err;
+  if(isset($res[0])) return $res;
+  else return $sql->errorInfo();
 }
 ?>

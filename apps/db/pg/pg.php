@@ -1,8 +1,6 @@
 <?php
-return function() {
-  static $singleton = true;
-  $conf = ['host'=>'host','base'=>'base','user'=>'user','pass'=>'***'];
-  $db = new PDO('pgsql:host='.$conf['host'].';dbname='.$conf['base'].'',$conf['user'],$conf['pass'],[PDO::ATTR_PERSISTENT => true]);
+return function($host,$base,$user,$pass) {
+  $db = new PDO('pgsql:host='.$host.';dbname='.$base.'',$user,$pass,[PDO::ATTR_PERSISTENT => true]);
   $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
   return $db;
 };
