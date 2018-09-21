@@ -20,7 +20,6 @@ composer create-project --prefer-dist  livesugar/framework . dev-master@dev
 ## Examples
 
 Call apps to HTTP GET query
-
 ```
 http://example.com?apps=uuid
 ```
@@ -28,6 +27,25 @@ http://example.com?apps=uuid
 Call view to HTTP GET query
 ```
 http://example.com?view=page/index
+```
+
+Call apps to PHP file
+```php
+$this->nameapps();
+# or 
+$this->namespace->nameapps();
+# or
+$this->categoryapps->nameapps();
+```
+
+Call apps to PHTML file
+```html
+<div><?php echo self::$apps->nameapps() ?></div>
+<div><?php echo self::$apps->nameclass->namemethod() ?></div>
+```
+Call view to PHTML file
+```html
+<div><?php echo self::$view->nameview(); ?></div>
 ```
 
 ## History
