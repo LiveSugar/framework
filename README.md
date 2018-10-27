@@ -1,6 +1,4 @@
-<p align="center">
-<img src="https://github.styleci.io/repos/7548986/shield?style=plastic&branch=5.1" alt="styleci">
-</p>
+[![StyleCI Status](https://styleci.io/repos/150756823/shield)](https://github.styleci.io/repos/150756823)
 
 # Documentation
 
